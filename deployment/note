@@ -6,3 +6,6 @@ $ kubectl apply -f deployment.yaml
 $  kubectl expose deployment example-service --type=NodePort --port=8080
 $  kubectl get pods
 $  kubectl get svc example-service
+
+$ kubectl apply -f deployment.yaml 
+$ kubectl rollout status deployment/example-service
