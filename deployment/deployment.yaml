@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-service
+  labels:
+    app: example-service
+spec:
+  replicas: 3 # Number of replicas to ensure high availability
+  selector:
+    matchLabels:
+      app: example-service
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0 # Ensure no downtime
+      maxSurge: 1 # Add one pod above the desired number during updates
+  template:
+    metadata:
+      labels:
+        app: example-service
+    spec:
+      containers:
+      - name: example-service
+        image: ghcr.io/daominhtan/example-service:v1
+        ports:
+        - containerPort: 8080 # Change this if your application uses a different port
+        readinessProbe:
+          httpGet:
+            path: /healthz # Endpoint to check readiness (customize for your app)
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /healthz # Endpoint to check liveness (customize for your app)
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 20
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-service
+spec:
+  selector:
+    app: api
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8080
+  type: NodePort

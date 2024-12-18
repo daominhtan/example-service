@@ -1,0 +1,8 @@
+$ kubectl delete deployment.apps/example-service
+$ kubectl apply -f deployment.yaml 
+# $ kubectl expose deployment example-service --type=LoadBalancer --name=example-service --port=80 --target-port=8080
+# $ kubectl expose deployment example-service --type=NodePort --name=example-service --port=8081 --target-port=8080
+
+$  kubectl expose deployment example-service --type=NodePort --port=8080
+$  kubectl get pods
+$  kubectl get svc example-service
