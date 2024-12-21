@@ -3,9 +3,39 @@ $ kubectl apply -f deployment.yaml
 # $ kubectl expose deployment example-service --type=LoadBalancer --name=example-service --port=80 --target-port=8080
 # $ kubectl expose deployment example-service --type=NodePort --name=example-service --port=8081 --target-port=8080
 
-$  kubectl expose deployment example-service --type=NodePort --port=8080
+$ kubectl expose deployment example-service --type=NodePort --port=8080
+$ kubectl expose deployment example-service --type=NodePort --port=8080 --target-port=8080 --node-port=30080
+$ kubectl expose deployment example-service --type=NodePort --port=8080 --target-port=8080 --node-port=30080
+
+
 $  kubectl get pods
 $  kubectl get svc example-service
 
 $ kubectl apply -f deployment.yaml 
 $ kubectl rollout status deployment/example-service
+
+
+$ minikube ip 
+192.168.49.2
+
+
+http://192.168.49.2:30080/ping
+
+
+$ kubectl port-forward service/example-service 8080:8080
+$ http://localhost:8080/ping
+
+
+
+# Config for MetalLB
+$ minikube addons list
+$ minikube addons enable metallb
+$ minikube addons configure metallb
+
+
+# minikube start --driver=docker --listen-address=0.0.0.0 --apiserver-ips=192.168.1.159
+minikube start --driver=docker --listen-address=0.0.0.0 --extra-config=apiserver.bind-address=0.0.0.0
+minikube start --driver=docker --listen-address=0.0.0.0 --extra-config=apiserver.bind-address=0.0.0.0
+
+kubectl expose deployment example-service --type=NodePort --port=8080
+minikube service example-service --url
