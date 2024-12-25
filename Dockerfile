@@ -2,16 +2,16 @@
 FROM golang:1.23.1-alpine3.20 as builder
 
 # Set environment variables
-# ENV GO111MODULE=on \
-#     CGO_ENABLED=0 \
-#     GOOS=linux \
-#     GOARCH=amd64
-
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
     GOOS=linux \
-    GOARCH=arm \
-    GOARM=7
+    GOARCH=amd64
+
+# ENV GO111MODULE=on \
+#     CGO_ENABLED=0 \
+#     GOOS=linux \
+#     GOARCH=arm \
+#     GOARM=7
 
 # Set the working directory in the container
 WORKDIR /app
